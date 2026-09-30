@@ -82,13 +82,14 @@ class ShoppingList
     public void Load()
     {
         if (!File.Exists(path)) return; // Om filen inte finns börjar vi med en tom lista i stället för att krascha.
-        string text = File.ReadAllText(path);
-        string[] lines = text.Split('\n');
+        string [] lines = File.ReadAllLines(path);
 
         foreach (string line in lines)
         {
             string[] parts = line.Split(';');
-            items.Add(new Item(parts[1], int.Parse(parts[0])));
+            if (parts.Length < 2) continue;
+            if (!int.TryParse(parts[0], out int price)) continue; // Om priset inte är ett tal hoppar vi över raden i stället för att krascha
+             items.Add(new Item(parts[1], price)); 
         }
     }
 }
