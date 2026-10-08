@@ -34,7 +34,7 @@ while (true)
         }
         list.Add(new Item(name, price));
     }
-    else if (choice == 2)
+       else if (choice == 2)
     {
         Console.Write("Nummer: ");
 
@@ -44,7 +44,12 @@ while (true)
             Console.WriteLine("Numret måste vara ett heltal.");
             continue;
         }
-        list.RemoveAt(number);
+
+        // Om numret inte finns berättar vi det för användaren
+        if (!list.RemoveAt(number))
+        {
+            Console.WriteLine("Det finns ingen vara med det numret.");
+        }
     }
     else if (choice == 3)
     {
