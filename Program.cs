@@ -13,20 +13,37 @@ while (true)
     Console.WriteLine("5. Avsluta");
     Console.Write("Välj: ");
 
-    int choice = int.Parse(Console.ReadLine());
+    // Om användaren inte skriver ett heltal visar vi menyn igen i stället för att krascha
+    if (!int.TryParse(Console.ReadLine(), out int choice))
+    {
+        Console.WriteLine("Skriv en siffra mellan 1 och 5.");
+        continue;
+    }
 
     if (choice == 1)
     {
         Console.Write("Namn: ");
         string name = Console.ReadLine();
         Console.Write("Pris: ");
-        int price = int.Parse(Console.ReadLine());
+
+        // Priset måste vara ett heltal, annars går vi tillbaka till menyn
+        if (!int.TryParse(Console.ReadLine(), out int price))
+        {
+            Console.WriteLine("Priset måste vara ett heltal.");
+            continue;
+        }
         list.Add(new Item(name, price));
     }
     else if (choice == 2)
     {
         Console.Write("Nummer: ");
-        int number = int.Parse(Console.ReadLine());
+
+        // Numret måste vara ett heltal, annars går vi tillbaka till menyn
+        if (!int.TryParse(Console.ReadLine(), out int number))
+        {
+            Console.WriteLine("Numret måste vara ett heltal.");
+            continue;
+        }
         list.RemoveAt(number);
     }
     else if (choice == 3)
