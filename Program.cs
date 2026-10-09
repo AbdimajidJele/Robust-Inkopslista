@@ -1,6 +1,5 @@
-ShoppingList list = new ShoppingList("items.txt");
+ShoppingList list = new ShoppingList("items.txt", 500); // 500 kr är budgettaketlist.Load();
 list.Load();
-
 while (true)
 {
     Console.WriteLine();

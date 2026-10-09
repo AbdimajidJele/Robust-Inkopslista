@@ -4,15 +4,27 @@ class ShoppingList
     private List<Item> items = new List<Item>();
     private string path;
 
-    public ShoppingList(string path)
+    private int budget; // Högsta tillåtna totalsumma för listan
+
+    public ShoppingList(string path, int budget)
+
     {
         this.path = path;
+        this.budget = budget;
     }
 
-    public void Add(Item item)
+  // Returnerar true om varan lades till, false om den skulle överstiga budgeten
+public bool Add(Item item)
+{
+    // Kolla om totalen med den nya varan blir större än taket
+    if (Total() + item.Price > budget)
     {
-        items.Add(item);
+        return false;
     }
+
+    items.Add(item);
+    return true;
+}
 
     // Returnerar true om varan togs bort, false om numret inte finns på listan
     public bool RemoveAt(int number)
@@ -104,7 +116,15 @@ class ShoppingList
             string[] parts = line.Split(';');
             if (parts.Length < 2) continue;
             if (!int.TryParse(parts[0], out int price)) continue; // Om priset inte är ett tal hoppar vi över raden i stället för att krascha
-            items.Add(new Item(parts[1], price));
+            // En rad i filen kan ha tomt namn eller negativt pris, då kastar Item ett undantag
+            try
+            {
+                items.Add(new Item(parts[1], price));
+            }
+            catch (ArgumentException)
+            {
+                // Ogiltig rad i filen, vi hoppar över den med flit
+            }
         }
     }
 }

@@ -1,3 +1,1 @@
-15;Mjölk
-32;Bröd
-89;Ost
+14;Kaka
