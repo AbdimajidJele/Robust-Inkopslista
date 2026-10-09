@@ -73,30 +73,38 @@ class ShoppingList
         {
             lines.Add($"{item.Price};{item.Name}");
         }
-
         try
         {
             File.WriteAllText(path, string.Join("\r\n", lines) + "\r\n");
+
+            // Meddelandet står i try så det bara skrivs om sparningen lyckades
+            Console.WriteLine("Listan är sparad.");
         }
-        catch
+        catch (UnauthorizedAccessException)
         {
+            // Filen är skrivskyddad eller vi saknar behörighet
+            Console.WriteLine("Kunde inte spara: du har inte behörighet att skriva till filen.");
+        }
+        catch (IOException)
+        {
+            // Till exempel att mappen saknas eller att filen används av något annat
+            Console.WriteLine("Kunde inte spara listan: filen gick inte att skriva.");
         }
 
-        Console.WriteLine("Listan är sparad.");
     }
 
     // Reads the file back into the list.
     public void Load()
     {
         if (!File.Exists(path)) return; // Om filen inte finns börjar vi med en tom lista i stället för att krascha.
-        string [] lines = File.ReadAllLines(path);
+        string[] lines = File.ReadAllLines(path);
 
         foreach (string line in lines)
         {
             string[] parts = line.Split(';');
             if (parts.Length < 2) continue;
             if (!int.TryParse(parts[0], out int price)) continue; // Om priset inte är ett tal hoppar vi över raden i stället för att krascha
-             items.Add(new Item(parts[1], price)); 
+            items.Add(new Item(parts[1], price));
         }
     }
 }
