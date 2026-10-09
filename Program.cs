@@ -1,5 +1,6 @@
-ShoppingList list = new ShoppingList("items.txt", 500); // 500 kr är budgettaketlist.Load();
+ShoppingList list = new ShoppingList("items.txt", 500); // 500 kr är budgettaket
 list.Load();
+
 while (true)
 {
     Console.WriteLine();
@@ -31,9 +32,33 @@ while (true)
             Console.WriteLine("Priset måste vara ett heltal.");
             continue;
         }
-        list.Add(new Item(name, price));
+
+        // Item kastar undantag vid tomt namn eller negativt pris, så vi fångar dem här
+        try
+        {
+            Item item = new Item(name, price);
+
+            // Add svarar false om varan skulle överskrida budgettaket
+            if (list.Add(item))
+            {
+                Console.WriteLine("Varan lades till.");
+            }
+            else
+            {
+                Console.WriteLine("Varan får inte plats i budgeten.");
+            }
+        }
+        // Måste stå före ArgumentException, eftersom den ärver från den
+        catch (ArgumentOutOfRangeException)
+        {
+            Console.WriteLine("Priset får inte vara negativt.");
+        }
+        catch (ArgumentException)
+        {
+            Console.WriteLine("Namnet får inte vara tomt.");
+        }
     }
-       else if (choice == 2)
+    else if (choice == 2)
     {
         Console.Write("Nummer: ");
 
