@@ -28,4 +28,4 @@
 ### Fel 6: programmet dolde att sparningen misslyckades
 **Vad hände:** Programmet skrev "Listan är sparad." även när sparningen misslyckades.
 **Varför:** `Save()` hade en tom `catch` som svalde felet, och meddelandet låg utanför `try`.
-**Lösning:** (skrivs när fel 6 är gjort)
+**Lösning:** Jag flyttade meddelandet "Listan är sparad." in i `try`, direkt efter `WriteAllText`, så att det bara skrivs om sparningen lyckades. Jag ersatte den tomma `catch` med `catch (UnauthorizedAccessException)` och `catch (IOException)`. Båda skriver ett felmeddelande, så användaren får veta att sparningen misslyckades.
